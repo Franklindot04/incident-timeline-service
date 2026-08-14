@@ -56,7 +56,7 @@ def delete_incident_endpoint(incident_id: int):
 
 
 @router.get("/filter")
-def filter_incidents(severity: str = None, limit: int = 10, offset: int = 0):
+def filter_incidents(severity: str | None = None, limit: int = 10, offset: int = 0):
     logger.info(
         f"Filtering incidents severity={severity}, limit={limit}, offset={offset}"
     )
