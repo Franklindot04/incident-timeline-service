@@ -3,7 +3,6 @@ from fastapi.exceptions import HTTPException
 from app.api.incidents import router as incidents_router
 from app.db.sqlite import init_db
 from app.core.errors import http_error_handler, general_error_handler
-from app.core.logging import logger
 
 app = FastAPI()
 init_db()
