@@ -4,44 +4,62 @@ import argparse
 BASE_URL = "http://localhost:8000"
 
 def create_incident(id, title, severity):
-    payload = {
-        "id": id,
-        "title": title,
-        "severity": severity
-    }
-    response = requests.post(f"{BASE_URL}/incidents/", json=payload)
-    print(response.json())
+    try:
+        payload = {
+            "id": id,
+            "title": title,
+            "severity": severity
+        }
+        response = requests.post(f"{BASE_URL}/incidents/", json=payload)
+        print(response.json())
+    except Exception as e:
+        print({"error": str(e)})
 
 def list_incidents():
-    response = requests.get(f"{BASE_URL}/incidents/")
-    print(response.json())
+    try:
+        response = requests.get(f"{BASE_URL}/incidents/")
+        print(response.json())
+    except Exception as e:
+        print({"error": str(e)})
 
 def update_incident(id, title, severity):
-    payload = {
-        "id": id,
-        "title": title,
-        "severity": severity
-    }
-    response = requests.put(f"{BASE_URL}/incidents/{id}", json=payload)
-    print(response.json())
+    try:
+        payload = {
+            "id": id,
+            "title": title,
+            "severity": severity
+        }
+        response = requests.put(f"{BASE_URL}/incidents/{id}", json=payload)
+        print(response.json())
+    except Exception as e:
+        print({"error": str(e)})
 
 def delete_incident(id):
-    response = requests.delete(f"{BASE_URL}/incidents/{id}")
-    print(response.json())
+    try:
+        response = requests.delete(f"{BASE_URL}/incidents/{id}")
+        print(response.json())
+    except Exception as e:
+        print({"error": str(e)})
 
 def filter_incidents(severity=None, limit=10, offset=0):
-    params = {}
-    if severity:
-        params["severity"] = severity
-    params["limit"] = limit
-    params["offset"] = offset
+    try:
+        params = {}
+        if severity:
+            params["severity"] = severity
+        params["limit"] = limit
+        params["offset"] = offset
 
-    response = requests.get(f"{BASE_URL}/incidents/filter", params=params)
-    print(response.json())
+        response = requests.get(f"{BASE_URL}/incidents/filter", params=params)
+        print(response.json())
+    except Exception as e:
+        print({"error": str(e)})
 
 def severity_analytics():
-    response = requests.get(f"{BASE_URL}/incidents/analytics/severity")
-    print(response.json())
+    try:
+        response = requests.get(f"{BASE_URL}/incidents/analytics/severity")
+        print(response.json())
+    except Exception as e:
+        print({"error": str(e)})
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Incident CLI")
@@ -50,7 +68,7 @@ if __name__ == "__main__":
     parser.add_argument("--update", action="store_true")
     parser.add_argument("--delete", action="store_true")
     parser.add_argument("--filter", action="store_true")
-    parser.add_argument("--analytics", action="store_true")  # ← added
+    parser.add_argument("--analytics", action="store_true")
     parser.add_argument("--id", type=int)
     parser.add_argument("--title")
     parser.add_argument("--severity")
