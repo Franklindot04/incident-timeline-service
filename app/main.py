@@ -5,6 +5,7 @@ from app.core.logging import logger
 from app.api.incidents import router as incidents_router
 from app.db.sqlite import init_db
 from app.core.errors import http_error_handler, general_error_handler
+from app.core.version import get_version
 
 
 app = FastAPI()
@@ -29,3 +30,8 @@ app.include_router(incidents_router, prefix="/incidents")
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+
+@app.get("/version")
+def version():
+    return {"version": get_version()}
