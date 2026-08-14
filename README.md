@@ -1,6 +1,7 @@
 # Incident Timeline Service
 
 A lightweight FastAPI microservice for tracking incidents, their severity, and timestamps.
+Implements a minimal, event‑driven incident tracking layer designed for low‑latency ingestion and consistent severity validation
 
 ## Features
 - **[Create incidents](ca://s?q=Create_incidents)**  
