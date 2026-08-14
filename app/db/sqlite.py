@@ -1,6 +1,7 @@
 import sqlite_utils
+from app.core.config import settings
 
-DB_PATH = "incidents.db"
+DB_PATH = settings.database_path
 
 
 def get_db():
