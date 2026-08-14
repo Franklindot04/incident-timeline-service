@@ -3,6 +3,7 @@ from app.models.incident import Incident
 from app.core.validation import validate_incident
 from app.db.sqlite import get_db, init_db, update_incident as update_incident_db
 from app.db.sqlite import delete_incident as delete_incident_db
+from app.core.logging import logger   # ← added
 
 router = APIRouter()
 
@@ -10,6 +11,7 @@ init_db()
 
 @router.post("/")
 def create_incident(incident: Incident):
+    logger.info(f"Creating incident {incident.id}")   # ← added
     validate_incident(incident)
     db = get_db()
     db["incidents"].insert({
@@ -22,11 +24,13 @@ def create_incident(incident: Incident):
 
 @router.get("/")
 def list_incidents():
+    logger.info("Listing incidents")   # ← added
     db = get_db()
     return list(db["incidents"].rows)
 
 @router.put("/{incident_id}")
 def update_incident_endpoint(incident_id: int, incident: Incident):
+    logger.info(f"Updating incident {incident_id}")   # ← added
     validate_incident(incident)
     updated = update_incident_db(incident_id, {
         "title": incident.title,
@@ -39,6 +43,7 @@ def update_incident_endpoint(incident_id: int, incident: Incident):
 
 @router.delete("/{incident_id}")
 def delete_incident_endpoint(incident_id: int):
+    logger.info(f"Deleting incident {incident_id}")   # ← added
     deleted = delete_incident_db(incident_id)
     if not deleted:
         return {"error": "Incident not found"}
@@ -46,6 +51,9 @@ def delete_incident_endpoint(incident_id: int):
 
 @router.get("/filter")
 def filter_incidents(severity: str = None, limit: int = 10, offset: int = 0):
+    logger.info(
+        f"Filtering incidents severity={severity}, limit={limit}, offset={offset}"
+    )   # ← added
     db = get_db()
     table = db["incidents"]
 
@@ -59,6 +67,7 @@ def filter_incidents(severity: str = None, limit: int = 10, offset: int = 0):
 
 @router.get("/analytics/severity")
 def severity_analytics():
+    logger.info("Generating severity analytics")   # ← added
     db = get_db()
     rows = list(db["incidents"].rows)
 
