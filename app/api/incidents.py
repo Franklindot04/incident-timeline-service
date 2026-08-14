@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from app.models.incident import Incident
 from app.core.validation import validate_incident
 from app.db.sqlite import get_db, init_db, update_incident as update_incident_db
-from app.db.sqlite import delete_incident as delete_incident_db  # ← added
+from app.db.sqlite import delete_incident as delete_incident_db
 
 router = APIRouter()
 
@@ -43,3 +43,16 @@ def delete_incident_endpoint(incident_id: int):
     if not deleted:
         return {"error": "Incident not found"}
     return {"message": "Incident deleted", "id": incident_id}
+
+@router.get("/filter")
+def filter_incidents(severity: str = None, limit: int = 10, offset: int = 0):
+    db = get_db()
+    table = db["incidents"]
+
+    if severity:
+        rows = list(table.rows_where("severity = ?", [severity]))
+    else:
+        rows = list(table.rows)
+
+    paginated = rows[offset: offset + limit]
+    return paginated
