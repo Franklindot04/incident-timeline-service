@@ -14,3 +14,11 @@ def init_db():
             "severity": str,
             "created_at": str
         }, pk="id")
+
+def update_incident(id, data):
+    db = get_db()
+    rows = list(db["incidents"].rows_where("id = ?", [id]))
+    if not rows:
+        return False
+    db["incidents"].update(id, data)
+    return True

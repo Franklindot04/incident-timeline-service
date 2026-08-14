@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from app.models.incident import Incident
 from app.core.validation import validate_incident
-from app.db.sqlite import get_db, init_db
+from app.db.sqlite import get_db, init_db, update_incident as update_incident_db
 
 router = APIRouter()
 
@@ -23,3 +23,15 @@ def create_incident(incident: Incident):
 def list_incidents():
     db = get_db()
     return list(db["incidents"].rows)
+
+@router.put("/{incident_id}")
+def update_incident_endpoint(incident_id: int, incident: Incident):
+    validate_incident(incident)
+    updated = update_incident_db(incident_id, {
+        "title": incident.title,
+        "severity": incident.severity,
+        "created_at": incident.created_at.isoformat()
+    })
+    if not updated:
+        return {"error": "Incident not found"}
+    return {"message": "Incident updated", "incident": incident}
