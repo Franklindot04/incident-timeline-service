@@ -56,3 +56,33 @@ def filter_incidents(severity: str = None, limit: int = 10, offset: int = 0):
 
     paginated = rows[offset: offset + limit]
     return paginated
+
+@router.get("/analytics/severity")
+def severity_analytics():
+    db = get_db()
+    rows = list(db["incidents"].rows)
+
+    counts = {
+        "low": 0,
+        "medium": 0,
+        "high": 0,
+        "critical": 0
+    }
+
+    for row in rows:
+        sev = row["severity"]
+        if sev in counts:
+            counts[sev] += 1
+
+    total = sum(counts.values())
+    percentages = {}
+
+    if total > 0:
+        for sev, count in counts.items():
+            percentages[sev] = round((count / total) * 100, 2)
+
+    return {
+        "counts": counts,
+        "percentages": percentages,
+        "total": total
+    }
