@@ -3,6 +3,7 @@ import argparse
 
 BASE_URL = "http://localhost:8000"
 
+
 def create_incident(id, title, severity):
     try:
         payload = {
@@ -15,12 +16,14 @@ def create_incident(id, title, severity):
     except Exception as e:
         print({"error": str(e)})
 
+
 def list_incidents():
     try:
         response = requests.get(f"{BASE_URL}/incidents/")
         print(response.json())
     except Exception as e:
         print({"error": str(e)})
+
 
 def update_incident(id, title, severity):
     try:
@@ -34,12 +37,14 @@ def update_incident(id, title, severity):
     except Exception as e:
         print({"error": str(e)})
 
+
 def delete_incident(id):
     try:
         response = requests.delete(f"{BASE_URL}/incidents/{id}")
         print(response.json())
     except Exception as e:
         print({"error": str(e)})
+
 
 def filter_incidents(severity=None, limit=10, offset=0):
     try:
@@ -54,12 +59,14 @@ def filter_incidents(severity=None, limit=10, offset=0):
     except Exception as e:
         print({"error": str(e)})
 
+
 def severity_analytics():
     try:
         response = requests.get(f"{BASE_URL}/incidents/analytics/severity")
         print(response.json())
     except Exception as e:
         print({"error": str(e)})
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Incident CLI")

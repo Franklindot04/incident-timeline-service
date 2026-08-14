@@ -2,8 +2,10 @@ import sqlite_utils
 
 DB_PATH = "incidents.db"
 
+
 def get_db():
     return sqlite_utils.Database(DB_PATH)
+
 
 def init_db():
     db = get_db()
@@ -15,6 +17,7 @@ def init_db():
             "created_at": str
         }, pk="id")
 
+
 def update_incident(id, data):
     db = get_db()
     rows = list(db["incidents"].rows_where("id = ?", [id]))
@@ -22,6 +25,7 @@ def update_incident(id, data):
         return False
     db["incidents"].update(id, data)
     return True
+
 
 def delete_incident(id):
     db = get_db()
