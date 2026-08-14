@@ -39,18 +39,23 @@ def filter_incidents(severity=None, limit=10, offset=0):
     response = requests.get(f"{BASE_URL}/incidents/filter", params=params)
     print(response.json())
 
+def severity_analytics():
+    response = requests.get(f"{BASE_URL}/incidents/analytics/severity")
+    print(response.json())
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Incident CLI")
     parser.add_argument("--create", action="store_true")
     parser.add_argument("--list", action="store_true")
     parser.add_argument("--update", action="store_true")
     parser.add_argument("--delete", action="store_true")
-    parser.add_argument("--filter", action="store_true")   # ← added
+    parser.add_argument("--filter", action="store_true")
+    parser.add_argument("--analytics", action="store_true")  # ← added
     parser.add_argument("--id", type=int)
     parser.add_argument("--title")
     parser.add_argument("--severity")
-    parser.add_argument("--limit", type=int, default=10)   # ← added
-    parser.add_argument("--offset", type=int, default=0)   # ← added
+    parser.add_argument("--limit", type=int, default=10)
+    parser.add_argument("--offset", type=int, default=0)
 
     args = parser.parse_args()
 
@@ -64,5 +69,7 @@ if __name__ == "__main__":
         delete_incident(args.id)
     elif args.filter:
         filter_incidents(args.severity, args.limit, args.offset)
+    elif args.analytics:
+        severity_analytics()
     else:
-        print("Use --create, --list, --update, --delete, or --filter")
+        print("Use --create, --list, --update, --delete, --filter, or --analytics")
