@@ -2,15 +2,32 @@ name: CI
 
 on:
   push:
+    branches: [ main ]
   pull_request:
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.11"
-      - run: pip install -r requirements.txt
-      - run: pytest
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install flake8 mypy
+
+    - name: Lint with flake8
+      run: |
+        flake8 app cli.py
+
+    - name: Type check with mypy
+      run: |
+        mypy app
