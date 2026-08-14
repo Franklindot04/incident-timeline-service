@@ -25,11 +25,16 @@ def update_incident(id, title, severity):
     response = requests.put(f"{BASE_URL}/incidents/{id}", json=payload)
     print(response.json())
 
+def delete_incident(id):
+    response = requests.delete(f"{BASE_URL}/incidents/{id}")
+    print(response.json())
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Incident CLI")
     parser.add_argument("--create", action="store_true")
     parser.add_argument("--list", action="store_true")
-    parser.add_argument("--update", action="store_true")  # ← added here
+    parser.add_argument("--update", action="store_true")
+    parser.add_argument("--delete", action="store_true")  # ← added here
     parser.add_argument("--id", type=int)
     parser.add_argument("--title")
     parser.add_argument("--severity")
@@ -42,5 +47,7 @@ if __name__ == "__main__":
         list_incidents()
     elif args.update:
         update_incident(args.id, args.title, args.severity)
+    elif args.delete:
+        delete_incident(args.id)
     else:
-        print("Use --create, --list, or --update")
+        print("Use --create, --list, --update, or --delete")
