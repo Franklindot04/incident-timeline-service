@@ -22,3 +22,11 @@ def update_incident(id, data):
         return False
     db["incidents"].update(id, data)
     return True
+
+def delete_incident(id):
+    db = get_db()
+    rows = list(db["incidents"].rows_where("id = ?", [id]))
+    if not rows:
+        return False
+    db["incidents"].delete(id)
+    return True

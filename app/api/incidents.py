@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from app.models.incident import Incident
 from app.core.validation import validate_incident
 from app.db.sqlite import get_db, init_db, update_incident as update_incident_db
+from app.db.sqlite import delete_incident as delete_incident_db  # ← added
 
 router = APIRouter()
 
@@ -35,3 +36,10 @@ def update_incident_endpoint(incident_id: int, incident: Incident):
     if not updated:
         return {"error": "Incident not found"}
     return {"message": "Incident updated", "incident": incident}
+
+@router.delete("/{incident_id}")
+def delete_incident_endpoint(incident_id: int):
+    deleted = delete_incident_db(incident_id)
+    if not deleted:
+        return {"error": "Incident not found"}
+    return {"message": "Incident deleted", "id": incident_id}
