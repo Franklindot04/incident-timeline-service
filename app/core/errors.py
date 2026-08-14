@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from app.core.logging import logger
 
 
-async def http_error_handler(request: Request, exc: HTTPException):
+def http_error_handler(request: Request, exc: HTTPException):
     logger.error(f"HTTP error: {exc.detail}")
     return JSONResponse(
         status_code=exc.status_code,
@@ -11,7 +11,7 @@ async def http_error_handler(request: Request, exc: HTTPException):
     )
 
 
-async def general_error_handler(request: Request, exc: Exception):
+def general_error_handler(request: Request, exc: Exception):
     logger.error(f"Unhandled error: {str(exc)}")
     return JSONResponse(
         status_code=500,
