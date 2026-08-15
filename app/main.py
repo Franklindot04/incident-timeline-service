@@ -342,4 +342,3 @@ def whoami(request: Request):
     ip = client.host if client is not None else "unknown"
     ua = request.headers.get("user-agent", "unknown")
     return {"ip": ip, "user_agent": ua}
-
