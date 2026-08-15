@@ -7,6 +7,7 @@ import uuid
 import json
 import os
 import random
+import hashlib
 from app.core.logging import logger
 from app.api.incidents import router as incidents_router
 from app.db.sqlite import init_db
@@ -228,3 +229,19 @@ def summary():
 @app.get("/random")
 def random_number():
     return {"value": random.randint(1, 1000)}
+
+
+# ---------------------------------------------------------
+# /hash Endpoint (SHA-256)
+# ---------------------------------------------------------
+@app.post("/hash")
+def hash_data(data: str = Body(...)):
+    return {"sha256": hashlib.sha256(data.encode()).hexdigest()}
+
+
+# ---------------------------------------------------------
+# /reverse Endpoint
+# ---------------------------------------------------------
+@app.post("/reverse")
+def reverse(data: str = Body(...)):
+    return {"reversed": data[::-1]}
