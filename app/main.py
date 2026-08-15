@@ -262,9 +262,12 @@ def calc(a: int, b: int):
 # ---------------------------------------------------------
 # /validate Endpoint
 # ---------------------------------------------------------
+
+
 class Payload(BaseModel):
     name: str
     age: int
+
 
 @app.post("/validate")
 def validate(payload: Payload):
