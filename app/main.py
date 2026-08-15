@@ -64,6 +64,17 @@ async def json_logging(request: Request, call_next):
     return response
 
 
+# ---------------------------------------------------------
+# Global Headers Middleware (X-Service + X-Version)
+# ---------------------------------------------------------
+@app.middleware("http")
+async def add_global_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["X-Service"] = "incident-timeline-service"
+    response.headers["X-Version"] = get_version()
+    return response
+
+
 app.add_exception_handler(HTTPException, http_error_handler)
 app.add_exception_handler(Exception, general_error_handler)
 
