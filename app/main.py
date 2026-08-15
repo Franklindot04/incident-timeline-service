@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Body
 from fastapi.exceptions import HTTPException
 from time import time
 from fastapi.responses import PlainTextResponse
@@ -77,3 +77,8 @@ def time_endpoint():
         "epoch": int(now.timestamp()),
         "timezone": "UTC"
     }
+
+
+@app.post("/echo")
+def echo(data: dict = Body(...)):
+    return {"echo": data}
