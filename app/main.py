@@ -104,3 +104,8 @@ def ip(request: Request):
 @app.get("/method")
 async def method(request: Request):
     return {"method": request.method}
+
+
+@app.get("/query")
+def query(request: Request):
+    return {"query": dict(request.query_params)}
