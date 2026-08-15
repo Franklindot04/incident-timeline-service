@@ -42,6 +42,11 @@ def ready():
         return {"ready": False}
 
 
+@app.get("/ping")
+def ping():
+    return {"ping": "pong"}
+
+
 @app.get("/version")
 def version():
     return {"version": get_version()}
