@@ -5,6 +5,7 @@ from fastapi.responses import PlainTextResponse
 from datetime import datetime, timezone
 import uuid
 import json
+import os
 from app.core.logging import logger
 from app.api.incidents import router as incidents_router
 from app.db.sqlite import init_db
@@ -165,3 +166,26 @@ def query(request: Request):
 @app.get("/path")
 def path(request: Request):
     return {"path": request.url.path}
+
+
+# ---------------------------------------------------------
+# /config Endpoint (Static Safe Config)
+# ---------------------------------------------------------
+@app.get("/config")
+def config():
+    return {
+        "debug": False,
+        "database": "sqlite",
+        "service": "incident-timeline-service"
+    }
+
+
+# ---------------------------------------------------------
+# /env Endpoint (Safe Environment Info)
+# ---------------------------------------------------------
+@app.get("/env")
+def env():
+    return {
+        "pythonpath": os.getenv("PYTHONPATH", "unknown"),
+        "environment": os.getenv("ENVIRONMENT", "unknown")
+    }
