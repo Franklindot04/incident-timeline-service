@@ -93,3 +93,8 @@ def uuid_endpoint():
 @app.get("/headers")
 def headers_endpoint(request: Request):
     return {"headers": dict(request.headers)}
+
+
+@app.get("/ip")
+def ip(request: Request):
+    return {"ip": request.client.host}
