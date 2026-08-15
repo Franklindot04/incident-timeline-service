@@ -3,6 +3,7 @@ from fastapi.exceptions import HTTPException
 from time import time
 from fastapi.responses import PlainTextResponse
 from datetime import datetime, timezone
+import uuid
 from app.core.logging import logger
 from app.api.incidents import router as incidents_router
 from app.db.sqlite import init_db
@@ -82,3 +83,8 @@ def time_endpoint():
 @app.post("/echo")
 def echo(data: dict = Body(...)):
     return {"echo": data}
+
+
+@app.get("/uuid")
+def uuid_endpoint():
+    return {"uuid": str(uuid.uuid4())}
