@@ -33,6 +33,15 @@ def health():
     return {"status": "ok"}
 
 
+@app.get("/ready")
+def ready():
+    try:
+        init_db()  # lightweight readiness check
+        return {"ready": True}
+    except Exception:
+        return {"ready": False}
+
+
 @app.get("/version")
 def version():
     return {"version": get_version()}
