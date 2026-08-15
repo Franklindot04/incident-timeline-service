@@ -97,4 +97,5 @@ def headers_endpoint(request: Request):
 
 @app.get("/ip")
 def ip(request: Request):
-    return {"ip": request.client.host}
+    client = request.client
+    return {"ip": client.host if client else "unknown"}
