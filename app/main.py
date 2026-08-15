@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.exceptions import HTTPException
 from time import time
+from fastapi.responses import PlainTextResponse
 from app.core.logging import logger
 from app.api.incidents import router as incidents_router
 from app.db.sqlite import init_db
@@ -35,3 +36,8 @@ def health():
 @app.get("/version")
 def version():
     return {"version": get_version()}
+
+
+@app.get("/metrics", response_class=PlainTextResponse)
+def metrics():
+    return "# metrics will be added later\n"
