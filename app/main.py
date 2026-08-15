@@ -55,3 +55,14 @@ def version():
 @app.get("/metrics", response_class=PlainTextResponse)
 def metrics():
     return "# metrics will be added later\n"
+
+
+@app.get("/status")
+def status():
+    return {
+        "service": "incident-timeline-service",
+        "version": get_version(),
+        "health": "ok",
+        "ready": True,
+        "ping": "pong",
+    }
