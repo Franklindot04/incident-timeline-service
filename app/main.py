@@ -99,3 +99,8 @@ def headers_endpoint(request: Request):
 def ip(request: Request):
     client = request.client
     return {"ip": client.host if client else "unknown"}
+
+
+@app.get("/method")
+async def method(request: Request):
+    return {"method": request.method}
