@@ -275,3 +275,22 @@ def validate(payload: Payload):
         "valid": True,
         "payload": payload.model_dump()
     }
+
+# ---------------------------------------------------------
+# /uppercase Endpoint
+# ---------------------------------------------------------
+
+
+@app.post("/uppercase")
+def uppercase(data: str = Body(...)):
+    return {"uppercase": data.upper()}
+
+
+# ---------------------------------------------------------
+# /lowercase Endpoint
+# ---------------------------------------------------------
+
+
+@app.post("/lowercase")
+def lowercase(data: str = Body(...)):
+    return {"lowercase": data.lower()}
