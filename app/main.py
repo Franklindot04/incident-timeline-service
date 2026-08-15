@@ -8,6 +8,7 @@ import json
 import os
 import random
 import hashlib
+import zlib  # <-- added for /checksum
 from app.core.logging import logger
 from app.api.incidents import router as incidents_router
 from app.db.sqlite import init_db
@@ -318,3 +319,26 @@ def stats(data: str = Body(...)):
         "length": len(data),
         "words": len(data.split())
     }
+
+
+# ---------------------------------------------------------
+# /checksum Endpoint
+# ---------------------------------------------------------
+
+
+@app.post("/checksum")
+def checksum(data: str = Body(...)):
+    return {"crc32": zlib.crc32(data.encode())}
+
+
+# ---------------------------------------------------------
+# /whoami Endpoint
+# ---------------------------------------------------------
+
+
+@app.get("/whoami")
+def whoami(request: Request):
+    client = request.client
+    ip = client.host if client is not None else "unknown"
+    ua = request.headers.get("user-agent", "unknown")
+    return {"ip": ip, "user_agent": ua}
