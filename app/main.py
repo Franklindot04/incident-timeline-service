@@ -88,3 +88,8 @@ def echo(data: dict = Body(...)):
 @app.get("/uuid")
 def uuid_endpoint():
     return {"uuid": str(uuid.uuid4())}
+
+
+@app.get("/headers")
+def headers_endpoint(request: Request):
+    return {"headers": dict(request.headers)}
