@@ -15,12 +15,29 @@ app = FastAPI()
 init_db()
 
 
+# ---------------------------------------------------------
+# X-Request-ID Middleware (Correlation ID Support)
+# ---------------------------------------------------------
+@app.middleware("http")
+async def add_request_id(request: Request, call_next):
+    request_id = request.headers.get("X-Request-ID", str(uuid.uuid4()))
+    response = await call_next(request)
+    response.headers["X-Request-ID"] = request_id
+    return response
+
+
+# ---------------------------------------------------------
+# Logging Middleware
+# ---------------------------------------------------------
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
     start = time()
     response = await call_next(request)
     duration = round(time() - start, 4)
-    logger.info(f"{request.method} {request.url.path} completed in {duration}s")
+    logger.info(
+        f"{request.method} {request.url.path} completed in {duration}s "
+        f"X-Request-ID={response.headers.get('X-Request-ID')}"
+    )
     return response
 
 
