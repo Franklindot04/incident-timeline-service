@@ -13,6 +13,8 @@ from app.core.errors import http_error_handler, general_error_handler
 from app.core.version import get_version
 
 
+START_TIME = time()
+
 app = FastAPI()
 init_db()
 
@@ -189,3 +191,19 @@ def env():
         "pythonpath": os.getenv("PYTHONPATH", "unknown"),
         "environment": os.getenv("ENVIRONMENT", "unknown")
     }
+
+
+# ---------------------------------------------------------
+# /uptime Endpoint
+# ---------------------------------------------------------
+@app.get("/uptime")
+def uptime():
+    return {"uptime": round(time() - START_TIME, 2)}
+
+
+# ---------------------------------------------------------
+# /routes Endpoint
+# ---------------------------------------------------------
+@app.get("/routes")
+def routes():
+    return {"routes": [route.path for route in app.routes]}
