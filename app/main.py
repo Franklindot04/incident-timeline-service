@@ -13,6 +13,7 @@ from app.api.incidents import router as incidents_router
 from app.db.sqlite import init_db
 from app.core.errors import http_error_handler, general_error_handler
 from app.core.version import get_version
+from pydantic import BaseModel   # <-- added for /validate
 
 
 START_TIME = time()
@@ -245,3 +246,32 @@ def hash_data(data: str = Body(...)):
 @app.post("/reverse")
 def reverse(data: str = Body(...)):
     return {"reversed": data[::-1]}
+
+
+# ---------------------------------------------------------
+# /calc Endpoint
+# ---------------------------------------------------------
+@app.get("/calc")
+def calc(a: int, b: int):
+    return {
+        "sum": a + b,
+        "product": a * b
+    }
+
+
+# ---------------------------------------------------------
+# /validate Endpoint
+# ---------------------------------------------------------
+
+
+class Payload(BaseModel):
+    name: str
+    age: int
+
+
+@app.post("/validate")
+def validate(payload: Payload):
+    return {
+        "valid": True,
+        "payload": payload.model_dump()
+    }
