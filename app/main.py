@@ -93,3 +93,9 @@ def uuid_endpoint():
 @app.get("/headers")
 def headers_endpoint(request: Request):
     return {"headers": dict(request.headers)}
+
+
+@app.get("/ip")
+def ip(request: Request):
+    client = request.client
+    return {"ip": client.host if client else "unknown"}
