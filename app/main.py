@@ -276,6 +276,7 @@ def validate(payload: Payload):
         "payload": payload.model_dump()
     }
 
+
 # ---------------------------------------------------------
 # /uppercase Endpoint
 # ---------------------------------------------------------
@@ -294,3 +295,26 @@ def uppercase(data: str = Body(...)):
 @app.post("/lowercase")
 def lowercase(data: str = Body(...)):
     return {"lowercase": data.lower()}
+
+
+# ---------------------------------------------------------
+# /repeat Endpoint
+# ---------------------------------------------------------
+
+
+@app.get("/repeat")
+def repeat(text: str, times: int):
+    return {"result": text * times}
+
+
+# ---------------------------------------------------------
+# /stats Endpoint
+# ---------------------------------------------------------
+
+
+@app.post("/stats")
+def stats(data: str = Body(...)):
+    return {
+        "length": len(data),
+        "words": len(data.split())
+    }
