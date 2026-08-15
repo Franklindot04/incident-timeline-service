@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.exceptions import HTTPException
 from time import time
 from fastapi.responses import PlainTextResponse
+from datetime import datetime, timezone
 from app.core.logging import logger
 from app.api.incidents import router as incidents_router
 from app.db.sqlite import init_db
@@ -65,4 +66,14 @@ def status():
         "health": "ok",
         "ready": True,
         "ping": "pong",
+    }
+
+
+@app.get("/time")
+def time_endpoint():
+    now = datetime.now(timezone.utc)
+    return {
+        "iso": now.isoformat(),
+        "epoch": int(now.timestamp()),
+        "timezone": "UTC"
     }
