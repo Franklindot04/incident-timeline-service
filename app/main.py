@@ -109,3 +109,8 @@ async def method(request: Request):
 @app.get("/query")
 def query(request: Request):
     return {"query": dict(request.query_params)}
+
+
+@app.get("/path")
+def path(request: Request):
+    return {"path": request.url.path}
