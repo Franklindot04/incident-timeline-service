@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 import uuid
 import json
 import os
+import random
 from app.core.logging import logger
 from app.api.incidents import router as incidents_router
 from app.db.sqlite import init_db
@@ -207,3 +208,23 @@ def uptime():
 @app.get("/routes")
 def routes():
     return {"routes": [route.path for route in app.routes]}
+
+
+# ---------------------------------------------------------
+# /summary Endpoint
+# ---------------------------------------------------------
+@app.get("/summary")
+def summary():
+    return {
+        "endpoints": len(app.routes),
+        "version": get_version(),
+        "status": "running"
+    }
+
+
+# ---------------------------------------------------------
+# /random Endpoint
+# ---------------------------------------------------------
+@app.get("/random")
+def random_number():
+    return {"value": random.randint(1, 1000)}
