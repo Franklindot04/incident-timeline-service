@@ -4,6 +4,7 @@ from time import time
 from fastapi.responses import PlainTextResponse
 from datetime import datetime, timezone
 import uuid
+import json
 from app.core.logging import logger
 from app.api.incidents import router as incidents_router
 from app.db.sqlite import init_db
@@ -38,6 +39,28 @@ async def log_requests(request: Request, call_next):
         f"{request.method} {request.url.path} completed in {duration}s "
         f"X-Request-ID={response.headers.get('X-Request-ID')}"
     )
+    return response
+
+
+# ---------------------------------------------------------
+# JSON Logging Middleware + X-Duration header
+# ---------------------------------------------------------
+@app.middleware("http")
+async def json_logging(request: Request, call_next):
+    start = time()
+    response = await call_next(request)
+    duration = round(time() - start, 4)
+
+    log = {
+        "method": request.method,
+        "path": request.url.path,
+        "status": response.status_code,
+        "duration": duration
+    }
+
+    print(json.dumps(log))
+
+    response.headers["X-Duration"] = str(duration)
     return response
 
 
