@@ -338,7 +338,8 @@ def checksum(data: str = Body(...)):
 
 @app.get("/whoami")
 def whoami(request: Request):
-    return {
-        "ip": request.client.host,
-        "user_agent": request.headers.get("user-agent")
-    }
+    client = request.client
+    ip = client.host if client is not None else "unknown"
+    ua = request.headers.get("user-agent", "unknown")
+    return {"ip": ip, "user_agent": ua}
+
