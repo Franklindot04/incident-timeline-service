@@ -294,5 +294,3 @@ def uppercase(data: str = Body(...)):
 @app.post("/lowercase")
 def lowercase(data: str = Body(...)):
     return {"lowercase": data.lower()}
-
-    
